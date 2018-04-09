@@ -12,9 +12,11 @@
                 <div class="col-lg-12 login-title">
                     Inicio de Sesion
                 </div>
+                
 
                 <div class="col-lg-12 login-form">
                     <div class="col-lg-12 login-form">
+                    <h5 style="color:red; margin-top: -30px; font-size: 15px;" id='resultado'></h5>
                         <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
                            <div class="form-group">
                                 <label class="form-control-label">Email</label>
@@ -37,7 +39,7 @@
                                     <!-- Error Message -->
                                 </div>
                                 <div class="col-lg-6 login-btm login-button">
-                                    <button type="submit" class="btn btn-outline-primary">Iniciar Sesion</button>
+                                    <button id="login" type="submit" class="btn btn-outline-primary">Iniciar Sesion</button>
                                 </div>
                                 
                             </div>
@@ -47,6 +49,24 @@
                 <div class="col-lg-3 col-md-2"></div>
             </div>
         </div>
+
+<script>
+
+
+document.getElementById( 'new_user' ).addEventListener('submit', function(e) {
+  var fields = document.querySelectorAll( '#new_user .form-control');
+  var value = '';
+  for( var i=0, len = fields.length; i<len; i++ ) {
+    value = value || fields[i].value;
+  }
+  if(!value) {
+    $("#resultado").append("<p>Debes llenar los campos</p>");
+    $("#user_email").focus();
+    e.preventDefault();
+  }
+});
+
+</script>
 
 
 <style>
