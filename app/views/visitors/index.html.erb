@@ -5,6 +5,8 @@
 ============================== -->
 <header id="home">
 
+
+
 <!-- COLOR OVER IMAGE -->
 <div class="color-overlay">
 	
@@ -57,6 +59,11 @@
 				</div>
 				
 				<ul class="nav navbar-nav navbar-right social-navigation hidden-xs">
+					<%if current_user %>
+					<li style="margin-right: 10px;"><%= link_to('Cerrar Sesion', destroy_user_session_path, method: :delete) %></li>
+					<%else%>
+					<li style="margin-right: 10px;"><a href="/users/sign_in">Iniciar Sesion</a></li>
+					<%end%>
 					<li><a target="_blank" href="https://www.facebook.com/deblimeinc/"><i class="fab fa-facebook-square"></i></a></li>
 					<li><a target="_blank" href="https://twitter.com/infodeblime"><i class="fab fa-twitter-square"></i></a></li>
 					<li><a target="_blank" href="https://www.instagram.com/deblime/"><i class="fab fa-instagram"></i></a></li>
@@ -78,7 +85,7 @@
 			<div class="col-md-7 col-sm-7 intro-section">
 				
 				<h1 class="intro text-left" style="font-size: 35px;">
-				Obtén una asesoría gratuíta y dá el primer paso hacia el éxito
+				<%if current_user %><%=current_user.email%> obtén<%else%>Obtén<%end%> una asesoría gratuíta y dá el primer paso hacia el éxito
 </strong>
 				</h1>
 				
