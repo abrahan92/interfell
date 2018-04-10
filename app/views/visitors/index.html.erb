@@ -1,11 +1,39 @@
 
+<!-- Modal Pestanas -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+ 
+<!-- Modal HTML -->
+<div id="custommodal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Creacion de Pestanas</h4>
+            </div>
+            <div class="modal-body">
+               			<!-- Titulo -->
+						<input disabled="true" class="form-control input-box" id="titulomodal" type="text" name="titulomodal" placeholder="Titulo">
+						<!-- Titulo -->
+						<br>
+						<!-- Contenido -->
+						<textarea disabled="true" style="height: 140px;" class="form-control input-box" id="contenidomodal" name="contenidomodal" placeholder="Contenido"></textarea>
+						<!-- Contenido -->
+            </div>
+            <div class="modal-footer main-navigation">
+        		<button id="cerrarmodal" type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        		<a href="#section-pestana" id="guardartab" class="btn btn-primary" >Guardar</a>
+        		
+      		</div>
+        </div>
+    </div>
+</div>
+<!-- Modal Pestanas -->
 
 <!-- =========================
      HEADER   
 ============================== -->
 <header id="home">
-
-
 
 <!-- COLOR OVER IMAGE -->
 <div class="color-overlay">
@@ -32,12 +60,19 @@
 				<div class="navbar-collapse collapse" id="landx-navigation">
 					<ul class="nav navbar-nav navbar-right main-navigation">
 						<li><a href="#home">Inicio</a></li>
+						<li id="pestanas"><a href="#section-pestana">Pestanas</a></li>
 						<li><a href="#section1">Ventajas</a></li>
 						<li><a href="#section3">Servicios</a></li>
 					
 						<li><a href="#section5">Video</a></li>
 						<li><a href="#section6">Galería</a></li>
 						<li><a href="#section7">Casos de Éxito</a></li>
+						<%if current_user %>
+						<li style="margin-right: 10px;"><%= link_to('Cerrar Sesion', destroy_user_session_path, method: :delete) %></li>
+						<%else%>
+						<li style="margin-right: 10px;"><a href="/users/sign_in">Iniciar Sesion</a></li>
+						<%end%>
+						
 					
 					</ul>
 				</div>
@@ -134,23 +169,20 @@
 				<div class="vertical-registration-form animate fadeInRight one">
 					<div class="colored-line">
 					</div>
-					<h3>Dejanos tus Datos</h3>
-					<form class="registration-form" id="register" role="form">
-						<!-- Nombre -->
-						<input class="form-control input-box" id="name" type="text" name="name" placeholder="Nombre">
-						<!-- Nombre -->
-						<!-- Apellido -->
-						<input class="form-control input-box" id="email" type="email" name="email" placeholder="Apellido">
-						<!-- Apellido -->
-						<!-- Email -->
-						<input class="form-control input-box" id="email" type="email" name="email" placeholder="Email">
-						<!-- Email -->
-						<!-- Telefono -->
-						<input class="form-control input-box" id="phone-number" type="text" name="phone-number" placeholder="Teléfono">
-						<!-- Telefono -->
-
-						<button class="btn standard-button" type="submit" id="submit" name="submit">Solicitar Asesoría</button>
-					</form>
+					<h3>Estructura el contenido en Pestanas</h3>
+					<p id="camposvacios" style="color:red; font-style: italic; font-size:10px; margin-top: -10px; margin-bottom: -10px; text-align: left;">No puedes dejar los campos vacios</p>
+					<div class="registration-form" id="register" >
+						<!-- Titulo -->
+						<input class="form-control input-box" id="titulo" placeholder="Titulo" name="titulo" type="text">
+						<!-- Titulo -->
+						<!-- Contenido -->
+						<textarea name="contenido" style="height: 140px;" class="form-control input-box" id="contenido" placeholder="Contenido"></textarea>
+						<!-- Contenido -->
+						
+						
+					
+						<a id="incluirpestana" href="#custommodal" class="btn standard-button" data-toggle="modal">Incluir Pestana</a>
+					</div>
 				</div>
 			</div>
 			<!-- /END - REGISTRATION FORM -->
@@ -163,6 +195,32 @@
 
 </header>
 
+<!-- SECTION PESTANAS -->
+<a href="#" id="sectionpestanadiv"></a>
+<section class="section1" id="section-pestana">
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="brief text-left">
+				<h2>Pestanas</h2>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<ul class="nav nav-tabs" id="tabs">
+			 
+			  
+			  
+
+			</ul>
+			<div class="tab-content" id="myTabContent">
+			 
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+<!-- SECTION PESTANAS -->
 
 <!-- =========================
      SECTION 1   
@@ -851,3 +909,96 @@ animation-delay: 0.5s;
 }
 
 </style>
+
+
+<!-- Script para pestanas -->
+<script>
+$("#section-pestana").hide();
+$("#titulo").val("");
+$("#contenido").val("");
+$("#camposvacios").hide();
+$("#pestanas").hide();
+
+$("#incluirpestana").click(function(e){
+
+		if($("#titulo").val() == "" || $("#contenido").val() == ""){
+			$("#camposvacios").show();
+			e.preventDefault();
+			return false;
+		}else{
+			$("input[type=text][name=titulomodal]").val($("input[type=text][name=titulo]").val());
+			$("#contenidomodal").val($("#contenido").val());
+			$("#camposvacios").hide();
+		}
+
+
+
+});
+
+//<li class='nav-item active'><a class='nav-link' id='profile-tab' data-toggle='tab' href='#profile' role='tab' aria-controls='profile' aria-selected='false'>Profile</a></li>
+
+// <div class='tab-pane fade' id='profile' role='tabpanel'>asd</div>
+
+
+
+$("#guardartab").click(function(){
+
+	/*if($("#home-tab").text() == ""){
+		$("#section-pestana").show();
+		$("#home-tab").text($("#titulomodal").val());
+		$("div.p1").html($("#contenidomodal").val());
+		$("#titulo").val("");
+		$("#contenido").val("");
+		$("#titulomodal").val("");
+		$("#contenidomodal").val("");
+		$(".close").click();
+		
+	}else{
+
+	}*/
+	var tabscount = $("#tabs li").length+1;
+	
+	if(tabscount == 1){
+		$("#pestanas").show();
+		$("#section-pestana").show();
+		$("ul.nav-tabs").append("<li class='nav-item active'><a class='nav-link active' id='profile-tab-"+tabscount+"' data-toggle='tab' href='#profile-"+tabscount+"' role='tab' aria-controls='profile-"+tabscount+"' aria-selected='false'></a></li>");
+		$("div.tab-content").append("<div class='tab-pane active' id='profile-"+tabscount+"' role='tabpanel'>"+tabscount+"</div>");
+		$("#profile-tab-1").text($("#titulomodal").val());
+		$("div#profile-1").html($("#contenidomodal").val());
+		$("#titulo").val("");
+		$("#contenido").val("");
+		$("#titulomodal").val("");
+		$("#contenidomodal").val("");
+
+		$(".close").click();
+
+	}else{
+		
+		$("#section-pestana").show();
+		$("ul.nav-tabs").append("<li class='nav-item'><a class='nav-link' id='profile-tab-"+tabscount+"' data-toggle='tab' href='#profile-"+tabscount+"' role='tab' aria-controls='profile-"+tabscount+"' aria-selected='false'>Profile-"+tabscount+"</a></li>");
+		$("div.tab-content").append("<div class='tab-pane fade' id='profile-"+tabscount+"' role='tabpanel'>"+tabscount+"</div>");
+
+		$("#profile-tab-"+tabscount+"").text($("#titulomodal").val());
+		$("div#profile-"+tabscount+"").html($("#contenidomodal").val());
+
+		$("#titulo").val("");
+		$("#contenido").val("");
+		$("#titulomodal").val("");
+		$("#contenidomodal").val("");
+		$(".close").click();
+	}
+	
+
+});
+
+
+
+$("#cerrarmodal").click(function(){
+	$("#titulo").val("");
+	$("#contenido").val("");
+	$("#titulomodal").val("");
+	$("#contenidomodal").val("");
+});
+
+</script>
+<!-- Script para pestanas -->
